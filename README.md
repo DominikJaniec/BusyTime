@@ -1,4 +1,1 @@
-BusyTime
-========
-
-A simple application for measuring a busy time at work.
+BusyTime========A simple application for measuring a busy time at work.--------------This is a Pet Project for develop my skills in XAML, .NET 4.5, MVVM and TDD.Development task:>* User sets a day start time>* User sets a work time>* User gets a day finish time>* User gets a countdown timer and alarm at end of day
