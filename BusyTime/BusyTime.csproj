@@ -54,9 +54,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\DateTimeConverter.cs" />
-    <Compile Include="Converter\TimeLeftConverter.cs" />
+    <Compile Include="Converter\RemainingTimeConverter.cs" />
     <Compile Include="Converter\TimeSpanConverter.cs" />
-    <Compile Include="Converter\IntegersToTimeConverter.cs" />
     <Compile Include="ViewModel\AlarmViewModel.cs" />
     <Compile Include="ViewModel\ConfigViewvModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
