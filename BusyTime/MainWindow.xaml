@@ -1,8 +1,13 @@
 ﻿<Window x:Class="BusyTime.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        xmlns:Views="clr-namespace:BusyTime.View"
+        Title="Pracowity czas - 2013 Dominik Janiec"
+        Width="525"
+        Height="350">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <Views:MainView />
+    </ScrollViewer>
 </Window>

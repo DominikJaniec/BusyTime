@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="BusyTime.View.MainControls.WorkTimeProgres"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DataContext="{StaticResource MainVM}"
+             d:DesignHeight="50"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
+
+    <Grid>
+        <ProgressBar Foreground="{Binding CurrentTimePercent,
+                                          Converter={StaticResource ColoredPercentCon}}"
+                     IsIndeterminate="{Binding IsOverWork}"
+                     Maximum="1"
+                     Minimum="0"
+                     Value="{Binding CurrentTimePercent}" />
+
+        <Rectangle Width="{Binding ActualWidth,
+                                   ElementName=RemainingText,
+                                   Mode=OneWay}"
+                   Height="{Binding ActualHeight,
+                                    ElementName=RemainingText,
+                                    Mode=OneWay}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Fill="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                   Opacity="0.5"
+                   RadiusX="25"
+                   RadiusY="15"
+                   RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1.15" />
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+            <Rectangle.Effect>
+                <BlurEffect Radius="25" />
+            </Rectangle.Effect>
+        </Rectangle>
+
+        <WrapPanel Name="RemainingText"
+                   Margin="25,10"
+                   HorizontalAlignment="Center">
+            <Label Content="Pozostało jeszcze:"
+                   Visibility="{Binding IsOverWork,
+                                        ConverterParameter=!,
+                                        Converter={StaticResource BooleanVisibilityCon}}" />
+            <Label Content="Już ponad:"
+                   Visibility="{Binding IsOverWork,
+                                        Converter={StaticResource BooleanVisibilityCon}}" />
+            <Label Content="{Binding RemainingTime, Converter={StaticResource RemainingTimeCon}}" />
+        </WrapPanel>
+
+        <Rectangle xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                   Fill="Transparent"
+                   ToolTipService.ShowDuration="{x:Static sys:Int32.MaxValue}">
+            <Rectangle.ToolTip>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Wykonałem(am):" />
+                        <Label Content="{Binding CurrentTimePercent}"
+                               ContentStringFormat="P2"
+                               Style="{StaticResource LabelDoubled}" />
+                        <Label Content="swojej pracy." />
+                    </StackPanel>
+
+                    <Rectangle Height="4"
+                               HorizontalAlignment="Stretch"
+                               Fill="{Binding CurrentTimePercent,
+                                              Converter={StaticResource ColoredPercentCon}}" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Jestem tu już od:" />
+                        <Label Content="{Binding CurrentWorkingTime,
+                                                 Converter={StaticResource RemainingTimeCon}}"
+                               Style="{StaticResource LabelDoubled}" />
+                    </StackPanel>
+                </StackPanel>
+            </Rectangle.ToolTip>
+        </Rectangle>
+    </Grid>
+</UserControl>

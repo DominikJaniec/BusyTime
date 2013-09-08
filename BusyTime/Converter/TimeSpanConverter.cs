@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace BusyTime.Converter
 {
-    public class TimeSpanConverter : IValueConverter
+    class TimeSpanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -23,7 +23,7 @@ namespace BusyTime.Converter
                 throw new ArgumentException("Can convert only from TimeSpan", "value");
             }
 
-            return String.Format("{0}{1}{2}", (int)timeSpan.TotalHours, culture.DateTimeFormat.TimeSeparator, timeSpan.Minutes);
+            return String.Format("{0}{1}{2:00}", (int)timeSpan.TotalHours, culture.DateTimeFormat.TimeSeparator, timeSpan.Minutes);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

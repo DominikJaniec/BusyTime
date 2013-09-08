@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:BusyTime.Converter">
+
+    <converters:BooleanVisibilityConverter x:Key="BooleanVisibilityCon" />
+    <converters:ColoredPercentConverter x:Key="ColoredPercentCon" />
+    <converters:DateTimeConverter x:Key="DateTimeCon" />
+    <converters:RemainingTimeConverter x:Key="RemainingTimeCon" />
+    <converters:TimeSpanConverter x:Key="TimeSpanCon" />
+
+</ResourceDictionary>

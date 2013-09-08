@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace BusyTime.ViewModel
@@ -25,7 +20,6 @@ namespace BusyTime.ViewModel
 
                     Notify("WorkStartHours");
                     Notify("WorkStart");
-
                     UpdateEndOfWork();
                 }
             }
@@ -50,20 +44,20 @@ namespace BusyTime.ViewModel
         }
 
 
-        public TimeSpan WorkTime { get; private set; }
-        private double workTimeHours;
-        public double WorkTimeHours
+        public TimeSpan DeclaredWorkTime { get; private set; }
+        private double declaredWorkTimeHours;
+        public double DeclaredWorkTimeHours
         {
-            get { return workTimeHours; }
+            get { return declaredWorkTimeHours; }
             set
             {
-                if (value != workTimeHours)
+                if (value != declaredWorkTimeHours)
                 {
-                    workTimeHours = value;
-                    WorkTime = TimeSpan.FromHours(workTimeHours);
+                    declaredWorkTimeHours = value;
+                    DeclaredWorkTime = TimeSpan.FromHours(declaredWorkTimeHours);
 
-                    Notify("WorkTimeHours");
-                    Notify("WorkTime");
+                    Notify("DeclaredWorkTimeHours");
+                    Notify("DeclaredWorkTime");
                     UpdateEndOfWork();
                 }
             }
@@ -73,32 +67,93 @@ namespace BusyTime.ViewModel
         public DateTime WorkEnd { get; private set; }
         private void UpdateEndOfWork()
         {
-            WorkEnd = WorkStart.Add(WorkTime);
+            WorkEnd = WorkStart.Add(DeclaredWorkTime);
 
             Notify("WorkEnd");
-            UpdateRemainingTime();
+            RecalculateResultTimes();
         }
 
 
+        public TimeSpan CurrentWorkingTime { get; private set; }
+        public double CurrentTimePercent { get; private set; }
         public TimeSpan RemainingTime { get; private set; }
-        private void UpdateRemainingTime()
+        public bool IsOverWork { get; private set; }
+        private void RecalculateResultTimes()
         {
-            RemainingTime = WorkEnd.Subtract(DateTime.Now);
+            DateTime nowDateTime = DateTime.Now;
+
+            CurrentWorkingTime = nowDateTime.Subtract(WorkStart);
+            CurrentTimePercent = CurrentWorkingTime.TotalSeconds / DeclaredWorkTime.TotalSeconds;
+
+            if (CurrentTimePercent < 1.0)
+            {
+                IsOverWork = false;
+                RemainingTime = WorkEnd.Subtract(nowDateTime);
+            }
+            else
+            {
+                IsOverWork = true;
+                RemainingTime = nowDateTime.Subtract(WorkEnd);
+            }
+
+            Notify("CurrentWorkingTime");
+            Notify("CurrentTimePercent");
+            Notify("IsOverWork");
             Notify("RemainingTime");
         }
 
-        private DispatcherTimer clockTimer;
+
+        private DispatcherTimer ClockInWork;
+        private void ClockInWorkTick(object sender, EventArgs e)
+        {
+            RecalculateResultTimes();
+        }
+        private void ResetColck(double numberOfSecondsForRefreshing = 0.1)
+        {
+            if (ClockInWork != null)
+            {
+                ClockInWork.Stop();
+                ClockInWork.Tick -= ClockInWorkTick;
+                ClockInWork = null;
+            }
+
+            ClockInWork = new DispatcherTimer();
+            ClockInWork.Tick += ClockInWorkTick;
+            ClockInWork.Interval = TimeSpan.FromSeconds(numberOfSecondsForRefreshing);
+
+            ClockInWork.Start();
+        }
+
+
         public MainViewModel()
         {
-            WorkStart = DateTime.Now;
+            DateTime nowDateTime = DateTime.Now;
+
+            WorkStart = nowDateTime;
             workStartHours = WorkStart.Hour;
             workStartMinutes = WorkStart.Minute;
 
-            workTimeHours = 8.5;
-            WorkTime = TimeSpan.FromHours(workTimeHours);
+            declaredWorkTimeHours = 8.5;
+            DeclaredWorkTime = TimeSpan.FromHours(declaredWorkTimeHours);
 
-            WorkEnd = WorkStart.Add(WorkTime);
-            RemainingTime = WorkEnd.Subtract(DateTime.Now);
+            WorkEnd = WorkStart.Add(DeclaredWorkTime);
+            RemainingTime = WorkEnd.Subtract(nowDateTime);
+
+            CurrentWorkingTime = nowDateTime.Subtract(WorkStart);
+            CurrentTimePercent = CurrentWorkingTime.TotalSeconds / DeclaredWorkTime.TotalSeconds;
+
+            if (CurrentTimePercent < 1.0)
+            {
+                IsOverWork = false;
+                RemainingTime = WorkEnd.Subtract(nowDateTime);
+            }
+            else
+            {
+                IsOverWork = true;
+                RemainingTime = nowDateTime.Subtract(WorkEnd);
+            }
+
+            ResetColck();
         }
     }
 }

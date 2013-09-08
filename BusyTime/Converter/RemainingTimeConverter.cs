@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace BusyTime.Converter
 {
-    public class RemainingTimeConverter : IValueConverter
+    class RemainingTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -23,27 +23,30 @@ namespace BusyTime.Converter
                 throw new ArgumentException("Can convert only from TimeSpan", "value");
             }
 
-            string result;
+            string result = "";
+            string secondsAloneFormat = "{0:0.0} sec.";
+            string secondsWithSthFormat = "{0:00.0} sec.";
+            string secondsFomrat = secondsAloneFormat;
 
-            if (remainingTime.Ticks >= 0)
-            {
-                result = "Pozostało jeszcze";
-            }
-            else
+            if (remainingTime.Ticks < 0)
             {
                 remainingTime = remainingTime.Negate();
-                result = "Już ponad";
             }
 
             if (remainingTime.TotalHours >= 1.0)
             {
                 int hours = (int)remainingTime.TotalHours;
-                result = String.Format(" {0} godz.", hours);
+                result += String.Format("{0} godz. ", hours);
+                secondsFomrat = secondsWithSthFormat;
             }
 
-            result += String.Format(" {0} min.", remainingTime.Minutes);
+            if (remainingTime.TotalMinutes >= 1.0)
+            {
+                result += String.Format("{0} min. ", remainingTime.Minutes);
+                secondsFomrat = secondsWithSthFormat;
+            }
 
-            return result;
+            return result += String.Format(secondsFomrat, remainingTime.Seconds + 0.001 * remainingTime.Milliseconds);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

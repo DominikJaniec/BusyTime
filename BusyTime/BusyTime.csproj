@@ -54,6 +54,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Converter\BooleanVisibilityConverter.cs" />
+    <Compile Include="Converter\ColoredPercentConverter.cs" />
     <Compile Include="Converter\DateTimeConverter.cs" />
     <Compile Include="Converter\RemainingTimeConverter.cs" />
     <Compile Include="Converter\TimeSpanConverter.cs" />
@@ -66,8 +68,20 @@
     <Compile Include="View\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\MainControls\EndOfWork.xaml.cs">
+      <DependentUpon>EndOfWork.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainControls\StartOfWork.xaml.cs">
+      <DependentUpon>StartOfWork.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainControls\WorkDeclaration.xaml.cs">
+      <DependentUpon>WorkDeclaration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainControls\WorkTimeProgres.xaml.cs">
+      <DependentUpon>WorkTimeProgres.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -81,6 +95,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ValueConverters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AlarmView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -89,7 +111,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\MainControls\EndOfWork.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainControls\StartOfWork.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainControls\WorkDeclaration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainControls\WorkTimeProgres.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

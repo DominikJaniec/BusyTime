@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="BusyTime.View.MainControls.WorkDeclaration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DataContext="{StaticResource MainVM}"
+             d:DesignHeight="75"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
+
+    <StackPanel VerticalAlignment="Center"
+                Orientation="Vertical">
+
+        <WrapPanel HorizontalAlignment="Center"
+                   Orientation="Horizontal">
+            <Label Content="Dziś Będę pracować:" />
+            <Label Content="{Binding DeclaredWorkTime, Converter={StaticResource TimeSpanCon}}" />
+        </WrapPanel>
+
+        <Slider LargeChange="1"
+                Maximum="12"
+                Minimum="0.25"
+                SmallChange="0.25"
+                TickFrequency="0.25"
+                Value="{Binding DeclaredWorkTimeHours}" />
+    </StackPanel>
+</UserControl>

@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace BusyTime.Converter
 {
-    public class DateTimeConverter : IValueConverter
+    class DateTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -23,7 +23,7 @@ namespace BusyTime.Converter
                 throw new ArgumentException("Can convert only from DateTime", "value");
             }
 
-            return dayTime.ToString(culture.DateTimeFormat.ShortTimePattern, culture);;
+            return dayTime.ToString(culture.DateTimeFormat.ShortTimePattern, culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
