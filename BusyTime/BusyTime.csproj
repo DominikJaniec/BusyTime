@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="Converter\DateTimeConverter.cs" />
     <Compile Include="Converter\RemainingTimeConverter.cs" />
     <Compile Include="Converter\TimeSpanConverter.cs" />
