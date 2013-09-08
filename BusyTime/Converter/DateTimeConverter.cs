@@ -13,11 +13,6 @@ namespace BusyTime.Converter
                 throw new ArgumentNullException("value");
             }
 
-            if (targetType != typeof(string))
-            {
-                throw new ArgumentException("Can convert only to String", "targetType");
-            }
-
             DateTime dayTime;
             if (value is DateTime)
             {
@@ -28,7 +23,7 @@ namespace BusyTime.Converter
                 throw new ArgumentException("Can convert only from DateTime", "value");
             }
 
-            return dayTime.ToString(culture.DateTimeFormat.ShortTimePattern);
+            return dayTime.ToString(culture.DateTimeFormat.ShortTimePattern, culture);;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

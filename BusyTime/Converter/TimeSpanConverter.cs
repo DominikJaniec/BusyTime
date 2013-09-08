@@ -13,11 +13,6 @@ namespace BusyTime.Converter
                 throw new ArgumentNullException("value");
             }
 
-            if (targetType != typeof(string))
-            {
-                throw new ArgumentException("Can convert only to String", "targetType");
-            }
-
             TimeSpan timeSpan;
             if (value is TimeSpan)
             {
