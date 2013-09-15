@@ -5,6 +5,14 @@ namespace BusyTime.Model
 {
     class ClockModel
     {
+        public enum ClockMode
+        {
+            Viewed,
+            Slowed,
+            Dispatched,
+            Terminated
+        }
+
         private DispatcherTimer timer;
         private ClockMode mode;
 
@@ -24,7 +32,7 @@ namespace BusyTime.Model
                             timer.Start();
                             break;
                         case ClockMode.Slowed:
-                            timer.Interval = TimeSpan.FromSeconds(1.0);
+                            timer.Interval = TimeSpan.FromMinutes(0.25);
                             timer.Start();
                             break;
                         case ClockMode.Dispatched:

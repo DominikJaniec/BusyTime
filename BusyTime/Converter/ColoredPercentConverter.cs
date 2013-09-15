@@ -7,10 +7,10 @@ namespace BusyTime.Converter
 {
     class ColoredPercentConverter : IValueConverter
     {
-        private Lazy<SolidColorBrush> colorRed = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Red));
-        private Lazy<SolidColorBrush> colorYellow = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Yellow));
-        private Lazy<SolidColorBrush> colorGreen = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Green));
-        private Lazy<SolidColorBrush> colorTeal = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Teal));
+        private static readonly Lazy<SolidColorBrush> colorRed = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Red));
+        private static readonly Lazy<SolidColorBrush> colorYellow = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Yellow));
+        private static readonly Lazy<SolidColorBrush> colorGreen = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Green));
+        private static readonly Lazy<SolidColorBrush> colorTeal = new Lazy<SolidColorBrush>(() => new SolidColorBrush(Colors.Teal));
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

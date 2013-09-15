@@ -93,7 +93,6 @@
     <Compile Include="Converter\DateTimeConverter.cs" />
     <Compile Include="Converter\RemainingTimeConverter.cs" />
     <Compile Include="Converter\TimeSpanConverter.cs" />
-    <Compile Include="Model\ClockMode.cs" />
     <Compile Include="Model\ClockModel.cs" />
     <Compile Include="Model\WorkModel.cs" />
     <Compile Include="ViewModel\AlarmViewModel.cs" />

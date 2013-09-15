@@ -18,7 +18,7 @@ namespace BusyTime
 
             mainVM = new MainViewModel();
             MainV.DataContext = mainVM;
-            mainVM.Clock.Mode = ClockMode.Viewed;
+            mainVM.Clock.Mode = ClockModel.ClockMode.Viewed;
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
@@ -27,10 +27,10 @@ namespace BusyTime
             {
                 case WindowState.Maximized:
                 case WindowState.Normal:
-                    mainVM.Clock.Mode = ClockMode.Viewed;
+                    mainVM.Clock.Mode = ClockModel.ClockMode.Viewed;
                     break;
                 case WindowState.Minimized:
-                    mainVM.Clock.Mode = ClockMode.Slowed;
+                    mainVM.Clock.Mode = ClockModel.ClockMode.Slowed;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("WindowState", WindowState, "Hell Has Frozen Over... Can not understand this state of the Window.");
