@@ -7,9 +7,21 @@ namespace BusyTime.Model
     {
         public enum ClockMode
         {
+            /// <summary>
+            /// Timer Tick as 0.1 sec.
+            /// </summary>
             Viewed,
+            /// <summary>
+            /// Timer Tick as 1.0 sec.
+            /// </summary>
             Slowed,
+            /// <summary>
+            /// Timer Tick as 5.0 sec.
+            /// </summary>
             Dispatched,
+            /// <summary>
+            /// Timer Stop...
+            /// </summary>
             Terminated
         }
 
@@ -32,11 +44,11 @@ namespace BusyTime.Model
                             timer.Start();
                             break;
                         case ClockMode.Slowed:
-                            timer.Interval = TimeSpan.FromMinutes(0.25);
+                            timer.Interval = TimeSpan.FromSeconds(1.0);
                             timer.Start();
                             break;
                         case ClockMode.Dispatched:
-                            timer.Interval = TimeSpan.FromMinutes(2.5);
+                            timer.Interval = TimeSpan.FromSeconds(5.0);
                             timer.Start();
                             break;
                         case ClockMode.Terminated:
