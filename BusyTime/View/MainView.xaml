@@ -4,7 +4,7 @@
              xmlns:MainControls="clr-namespace:BusyTime.View.MainControls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             DataContext="{StaticResource MainVM}"
+             DataContext="{StaticResource DefaultMainVM}"
              d:DesignHeight="300"
              d:DesignWidth="500"
              mc:Ignorable="d">

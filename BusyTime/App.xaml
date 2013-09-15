@@ -10,7 +10,7 @@
                 <ResourceDictionary Source="Resources/Styles.xaml" />
                 <ResourceDictionary Source="Resources/ValueConverters.xaml" />
                 <ResourceDictionary>
-                    <ViewModels:MainViewModel x:Key="MainVM" />
+                    <ViewModels:MainViewModel x:Key="DefaultMainVM" />
 
                     <Style TargetType="UserControl">
                         <Setter Property="Background" Value="Pink" />

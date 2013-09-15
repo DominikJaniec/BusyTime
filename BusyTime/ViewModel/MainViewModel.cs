@@ -81,25 +81,32 @@ namespace BusyTime.ViewModel
         private void RecalculateResultTimes()
         {
             DateTime nowDateTime = DateTime.Now;
+            bool riseIOverWorkEvent = false;
 
             CurrentWorkingTime = nowDateTime.Subtract(WorkStart);
             CurrentTimePercent = CurrentWorkingTime.TotalSeconds / DeclaredWorkTime.TotalSeconds;
 
             if (CurrentTimePercent < 1.0)
             {
-                IsOverWork = false;
                 RemainingTime = WorkEnd.Subtract(nowDateTime);
+                riseIOverWorkEvent = false ^ IsOverWork;
+                IsOverWork = false;
             }
             else
             {
-                IsOverWork = true;
                 RemainingTime = nowDateTime.Subtract(WorkEnd);
+                riseIOverWorkEvent = true ^ IsOverWork;
+                IsOverWork = true;
             }
 
             Notify("CurrentWorkingTime");
             Notify("CurrentTimePercent");
-            Notify("IsOverWork");
             Notify("RemainingTime");
+
+            if (riseIOverWorkEvent)
+            {
+                Notify("IsOverWork");
+            }
         }
 
 
@@ -108,20 +115,14 @@ namespace BusyTime.ViewModel
         {
             RecalculateResultTimes();
         }
-        private void ResetColck(double numberOfSecondsForRefreshing = 0.1)
+
+        public void ClockStart()
         {
-            if (ClockInWork != null)
-            {
-                ClockInWork.Stop();
-                ClockInWork.Tick -= ClockInWorkTick;
-                ClockInWork = null;
-            }
-
-            ClockInWork = new DispatcherTimer();
-            ClockInWork.Tick += ClockInWorkTick;
-            ClockInWork.Interval = TimeSpan.FromSeconds(numberOfSecondsForRefreshing);
-
             ClockInWork.Start();
+        }
+        public void ClockStop()
+        {
+            ClockInWork.Stop();
         }
 
 
@@ -153,7 +154,9 @@ namespace BusyTime.ViewModel
                 RemainingTime = nowDateTime.Subtract(WorkEnd);
             }
 
-            ResetColck();
+            ClockInWork = new DispatcherTimer();
+            ClockInWork.Tick += ClockInWorkTick;
+            ClockInWork.Interval = TimeSpan.FromSeconds(0.1);
         }
     }
 }
