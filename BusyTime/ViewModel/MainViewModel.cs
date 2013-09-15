@@ -1,11 +1,38 @@
-﻿using System;
+﻿using BusyTime.Model;
+using System;
 using System.Windows.Threading;
 
 namespace BusyTime.ViewModel
 {
     class MainViewModel : BaseViewModel
     {
-        public DateTime WorkStart { get; private set; }
+        public WorkModel Work { get; private set; }
+        public ClockModel Clock { get; private set; }
+
+        public MainViewModel(WorkModel model)
+        {
+            Initialize(model);
+        }
+        public MainViewModel()
+        {
+            Initialize(new WorkModel
+            {
+                Start = DateTime.Now.AddMinutes(-5.0),
+                Time = TimeSpan.FromHours(8.5)
+            });
+        }
+
+        private void Initialize(WorkModel model)
+        {
+            Work = model;
+
+            workStartHours = Work.Start.Hour;
+            workStartMinutes = Work.Start.Minute;
+            declaredWorkTimeHours = Work.Time.TotalHours;
+
+            Clock = new ClockModel(Dispatcher.CurrentDispatcher, new EventHandler((s, e) => RecalculateResultTimes()));
+        }
+
         private int workStartHours;
         public int WorkStartHours
         {
@@ -15,12 +42,10 @@ namespace BusyTime.ViewModel
                 if (value != workStartHours)
                 {
                     workStartHours = value;
-                    DateTime now = DateTime.Now;
-                    WorkStart = new DateTime(now.Year, now.Month, now.Day, workStartHours, WorkStart.Minute, 0);
+                    Work.Start = Work.Start.Date.AddHours(workStartHours).AddMinutes(Work.Start.Minute);
 
                     Notify("WorkStartHours");
-                    Notify("WorkStart");
-                    UpdateEndOfWork();
+                    UpdateWorkAndRecalculate();
                 }
             }
         }
@@ -33,18 +58,14 @@ namespace BusyTime.ViewModel
                 if (value != workStartMinutes)
                 {
                     workStartMinutes = value;
-                    DateTime now = DateTime.Now;
-                    WorkStart = new DateTime(now.Year, now.Month, now.Day, WorkStart.Hour, workStartMinutes, 0);
+                    Work.Start = Work.Start.Date.AddHours(Work.Start.Hour).AddMinutes(workStartMinutes);
 
                     Notify("WorkStartMinutes");
-                    Notify("WorkStart");
-                    UpdateEndOfWork();
+                    UpdateWorkAndRecalculate();
                 }
             }
         }
 
-
-        public TimeSpan DeclaredWorkTime { get; private set; }
         private double declaredWorkTimeHours;
         public double DeclaredWorkTimeHours
         {
@@ -54,47 +75,42 @@ namespace BusyTime.ViewModel
                 if (value != declaredWorkTimeHours)
                 {
                     declaredWorkTimeHours = value;
-                    DeclaredWorkTime = TimeSpan.FromHours(declaredWorkTimeHours);
+                    Work.Time = TimeSpan.FromHours(declaredWorkTimeHours);
 
                     Notify("DeclaredWorkTimeHours");
-                    Notify("DeclaredWorkTime");
-                    UpdateEndOfWork();
+                    UpdateWorkAndRecalculate();
                 }
             }
         }
 
-
-        public DateTime WorkEnd { get; private set; }
-        private void UpdateEndOfWork()
+        private void UpdateWorkAndRecalculate()
         {
-            WorkEnd = WorkStart.Add(DeclaredWorkTime);
-
-            Notify("WorkEnd");
+            Notify("Work");
             RecalculateResultTimes();
         }
-
 
         public TimeSpan CurrentWorkingTime { get; private set; }
         public double CurrentTimePercent { get; private set; }
         public TimeSpan RemainingTime { get; private set; }
         public bool IsOverWork { get; private set; }
+
         private void RecalculateResultTimes()
         {
             DateTime nowDateTime = DateTime.Now;
             bool riseIOverWorkEvent = false;
 
-            CurrentWorkingTime = nowDateTime.Subtract(WorkStart);
-            CurrentTimePercent = CurrentWorkingTime.TotalSeconds / DeclaredWorkTime.TotalSeconds;
+            CurrentWorkingTime = nowDateTime.Subtract(Work.Start);
+            CurrentTimePercent = CurrentWorkingTime.TotalSeconds / Work.Time.TotalSeconds;
 
             if (CurrentTimePercent < 1.0)
             {
-                RemainingTime = WorkEnd.Subtract(nowDateTime);
+                RemainingTime = Work.Finish.Subtract(nowDateTime);
                 riseIOverWorkEvent = false ^ IsOverWork;
                 IsOverWork = false;
             }
             else
             {
-                RemainingTime = nowDateTime.Subtract(WorkEnd);
+                RemainingTime = nowDateTime.Subtract(Work.Finish);
                 riseIOverWorkEvent = true ^ IsOverWork;
                 IsOverWork = true;
             }
@@ -107,56 +123,6 @@ namespace BusyTime.ViewModel
             {
                 Notify("IsOverWork");
             }
-        }
-
-
-        private DispatcherTimer ClockInWork;
-        private void ClockInWorkTick(object sender, EventArgs e)
-        {
-            RecalculateResultTimes();
-        }
-
-        public void ClockStart()
-        {
-            ClockInWork.Start();
-        }
-        public void ClockStop()
-        {
-            ClockInWork.Stop();
-        }
-
-
-        public MainViewModel()
-        {
-            DateTime nowDateTime = DateTime.Now;
-
-            WorkStart = nowDateTime;
-            workStartHours = WorkStart.Hour;
-            workStartMinutes = WorkStart.Minute;
-
-            declaredWorkTimeHours = 8.5;
-            DeclaredWorkTime = TimeSpan.FromHours(declaredWorkTimeHours);
-
-            WorkEnd = WorkStart.Add(DeclaredWorkTime);
-            RemainingTime = WorkEnd.Subtract(nowDateTime);
-
-            CurrentWorkingTime = nowDateTime.Subtract(WorkStart);
-            CurrentTimePercent = CurrentWorkingTime.TotalSeconds / DeclaredWorkTime.TotalSeconds;
-
-            if (CurrentTimePercent < 1.0)
-            {
-                IsOverWork = false;
-                RemainingTime = WorkEnd.Subtract(nowDateTime);
-            }
-            else
-            {
-                IsOverWork = true;
-                RemainingTime = nowDateTime.Subtract(WorkEnd);
-            }
-
-            ClockInWork = new DispatcherTimer();
-            ClockInWork.Tick += ClockInWorkTick;
-            ClockInWork.Interval = TimeSpan.FromSeconds(0.1);
         }
     }
 }

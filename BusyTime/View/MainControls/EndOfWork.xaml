@@ -12,6 +12,6 @@
                VerticalAlignment="Center"
                Orientation="Horizontal">
         <Label Content="Więc kończę pracę o godzinie:" />
-        <Label Content="{Binding WorkEnd, Converter={StaticResource DateTimeCon}}" />
+        <Label Content="{Binding Work.Finish, Converter={StaticResource DateTimeCon}}" />
     </WrapPanel>
 </UserControl>

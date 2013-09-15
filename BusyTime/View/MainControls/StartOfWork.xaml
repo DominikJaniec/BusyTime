@@ -14,7 +14,7 @@
         <WrapPanel HorizontalAlignment="Center"
                    Orientation="Horizontal">
             <Label Content="Zacząłem(am) pracowity dzień o godzinie:" />
-            <Label Content="{Binding WorkStart, Converter={StaticResource DateTimeCon}}" />
+            <Label Content="{Binding Work.Start, Converter={StaticResource DateTimeCon}}" />
         </WrapPanel>
 
         <Slider LargeChange="2"
