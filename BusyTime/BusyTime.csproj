@@ -95,6 +95,8 @@
     <Compile Include="Converter\TimeSpanConverter.cs" />
     <Compile Include="Model\ClockModel.cs" />
     <Compile Include="Model\WorkModel.cs" />
+    <Compile Include="Repository\AppSettingImp\WorksRepository.cs" />
+    <Compile Include="Repository\IWorksRepository.cs" />
     <Compile Include="ViewModel\AlarmViewModel.cs" />
     <Compile Include="ViewModel\ConfigViewvModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -218,6 +220,7 @@
   <ItemGroup>
     <Resource Include="BusyTime.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

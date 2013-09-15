@@ -1,6 +1,8 @@
 ﻿using BusyTime.Model;
+using BusyTime.Repository;
 using BusyTime.ViewModel;
 using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace BusyTime
@@ -11,12 +13,15 @@ namespace BusyTime
     public partial class MainWindow : Window
     {
         private MainViewModel mainVM;
+        private IWorksRepository worksRepo;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            mainVM = new MainViewModel();
+            worksRepo = new Repository.AppSettingImp.WorksRepository();
+            mainVM = new MainViewModel(worksRepo.GetLast());
+
             MainV.DataContext = mainVM;
             mainVM.Clock.Mode = ClockModel.ClockMode.Viewed;
         }
@@ -35,6 +40,10 @@ namespace BusyTime
                 default:
                     throw new ArgumentOutOfRangeException("WindowState", WindowState, "Hell Has Frozen Over... Can not understand this state of the Window.");
             }
+        }
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            worksRepo.StoreAsLast(mainVM.Work);
         }
     }
 }
