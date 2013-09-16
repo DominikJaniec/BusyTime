@@ -30,7 +30,39 @@ namespace BusyTime.ViewModel
             workStartMinutes = Work.Start.Minute;
             declaredWorkTimeHours = Work.Time.TotalHours;
 
-            Clock = new ClockModel(Dispatcher.CurrentDispatcher, new EventHandler((s, e) => RecalculateResultTimes()));
+            startWasYesterday = false;
+            Work.Start = DateTime.Now.Date
+                .AddHours(workStartHours)
+                .AddMinutes(workStartMinutes);
+
+            EventHandler clockTick = new EventHandler((s, e) => RecalculateResultTimes());
+            Clock = new ClockModel(Dispatcher.CurrentDispatcher, clockTick);
+        }
+
+        private bool startWasYesterday;
+        public bool StartWasYesterday
+        {
+            get { return startWasYesterday; }
+            set
+            {
+                if (value != startWasYesterday)
+                {
+                    startWasYesterday = value;
+
+                    DateTime newWorkStar = DateTime.Now.Date;
+                    if (startWasYesterday)
+                    {
+                        newWorkStar = newWorkStar.AddDays(-1.0);
+                    }
+
+                    Work.Start = newWorkStar
+                        .AddHours(Work.Start.Hour)
+                        .AddMinutes(Work.Start.Minute);
+
+                    Notify("StartWasYesterday");
+                    UpdateWorkAndRecalculate();
+                }
+            }
         }
 
         private int workStartHours;
@@ -42,7 +74,9 @@ namespace BusyTime.ViewModel
                 if (value != workStartHours)
                 {
                     workStartHours = value;
-                    Work.Start = Work.Start.Date.AddHours(workStartHours).AddMinutes(Work.Start.Minute);
+                    Work.Start = Work.Start.Date
+                        .AddHours(workStartHours)
+                        .AddMinutes(Work.Start.Minute);
 
                     Notify("WorkStartHours");
                     UpdateWorkAndRecalculate();
@@ -58,7 +92,9 @@ namespace BusyTime.ViewModel
                 if (value != workStartMinutes)
                 {
                     workStartMinutes = value;
-                    Work.Start = Work.Start.Date.AddHours(Work.Start.Hour).AddMinutes(workStartMinutes);
+                    Work.Start = Work.Start.Date
+                        .AddHours(Work.Start.Hour)
+                        .AddMinutes(workStartMinutes);
 
                     Notify("WorkStartMinutes");
                     UpdateWorkAndRecalculate();

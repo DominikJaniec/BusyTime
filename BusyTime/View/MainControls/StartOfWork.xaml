@@ -13,7 +13,55 @@
 
         <WrapPanel HorizontalAlignment="Center"
                    Orientation="Horizontal">
-            <Label Content="Zacząłem(am) pracowity dzień o godzinie:" />
+            <Label Content="Zacząłem(am)" />
+            <CheckBox Content="dzis"
+                      IsChecked="{Binding StartWasYesterday}">
+                <CheckBox.Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <StackPanel Margin="0,0,4,0"
+                                                Orientation="Horizontal">
+                                        <Label Content="dzis" />
+                                        <Path Width="10"
+                                              Height="10"
+                                              Data="F1 M146.061,295.33301 L146.061,324.224 C232.2,324.224 305.49899,256.811 305.49899,162.647 C305.49899,68.482697 220.964,5.3506799 148.201,5.3506799 C75.437302,5.3506799 44.4067,44.406601 44.4067,44.406601 L0,0 L0,165.323 L165.321,165.323 L119.043,119.043 C132.151,105.935 155.692,100.584 171.207,100.584 C207.47701,100.584 249.856,132.687 249.856,183.513 C249.856,234.34 208.66,295.33301 146.061,295.33301 z"
+                                              Fill="Black"
+                                              Stretch="Uniform"
+                                              UseLayoutRounding="False" />
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <StackPanel Margin="0,0,4,0"
+                                                        Orientation="Horizontal">
+                                                <Label Content="wczoraj" />
+                                                <Path Width="10"
+                                                      Height="10"
+                                                      Data="F1 M146.061,295.33301 L146.061,324.224 C232.2,324.224 305.49899,256.811 305.49899,162.647 C305.49899,68.482697 220.964,5.3506799 148.201,5.3506799 C75.437302,5.3506799 44.4067,44.406601 44.4067,44.406601 L0,0 L0,165.323 L165.321,165.323 L119.043,119.043 C132.151,105.935 155.692,100.584 171.207,100.584 C207.47701,100.584 249.856,132.687 249.856,183.513 C249.856,234.34 208.66,295.33301 146.061,295.33301 z"
+                                                      Fill="Black"
+                                                      Stretch="Uniform"
+                                                      UseLayoutRounding="False">
+                                                    <Path.LayoutTransform>
+                                                        <RotateTransform Angle="180" CenterX="0.5" CenterY="0.5" />
+                                                    </Path.LayoutTransform>
+                                                </Path>
+                                            </StackPanel>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+            <Label Content="pracowity dzień o godzinie:" />
             <Label Content="{Binding Work.Start, Converter={StaticResource DateTimeCon}}" />
         </WrapPanel>
 
